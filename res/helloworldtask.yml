@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: echo-hello-world
+spec:
+  steps:
+    - name: echo
+      image: python
+      script: |
+        #!/usr/bin/env python3
+        print("$(params.messageToPrint)")
+  params:
+    - name: messageToPrint
+      type: string
+      description: message for printing
+      default: "HELLO WORLD FROM TASK"

@@ -1,0 +1,32 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: echo-with-parameters
+spec:
+  params:
+    - name: message
+      type: string
+      default: "DEFAULT"
+  tasks:
+    - name: print-first-message
+      taskRef:
+        name: echo-hello-world
+      params:
+        - name: messageToPrint
+          value: "FIRST: $(params.message)"
+    - name: print-second-message
+      taskRef:
+        name: echo-hello-world
+      params:
+        - name: messageToPrint
+          value: "SECOND: $(params.message)"
+      runAfter:
+        - print-first-message
+    - name: print-third-message
+      taskRef:
+        name: echo-hello-world
+      params:
+        - name: messageToPrint
+          value: "THIRD: $(params.message)"
+      runAfter:
+        - print-second-message
